@@ -18,7 +18,6 @@ const options = {
   headers: { 'x-api-key': 'c9496f17-e0da-4ba4-90df-153857f43cff' } 
 };
 
-
 request(
   options, async (error, _response, body) =>{
     try{
@@ -57,6 +56,16 @@ request(
     }
   });
 
+//get data from local database
+app.get("/breeds" , async (req, res) =>{
+    try{
+    const allBreeds = await pool.query("SELECT * FROM breeds");
+    res.json(allBreeds.rows);
+  } catch (err){
+        console.error(err.message);    
+    }
+  });
+  
 
 const port = 3002;
 app.listen(port, () => {
