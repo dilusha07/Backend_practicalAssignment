@@ -11,7 +11,7 @@ const { body } = require("request");
 app.use(cors());
 app.use(express.json());
 
- 
+ //get data from catApi
 const options = { 
   method: 'GET',
   url: 'https://api.thecatapi.com/v1/breeds',
@@ -46,6 +46,16 @@ request(
     }
   });
 
+  //Save data into database
+  app.post("/breeds", async (req, res) => {
+    try{
+        const {name} = req.body;
+        const newBreed = await pool.query("INSERT INTO breeds (name) VALUES($1)", [name]);
+        res.json(newBreed.rows[0]);
+    }catch (err){
+          console.error(err.message); 
+    }
+  });
 
 
 const port = 3002;
